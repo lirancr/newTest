@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/root_container"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <TextView
@@ -16,7 +18,19 @@
         android:background="@android:color/holo_blue_dark"
         android:text="Sport News" />
 
+    <fragment
+        android:id="@+id/news_fragment"
+        android:layout_weight="1"
+        android:name="com.news.app.news.NewsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
 
+    <fragment
+        android:id="@+id/location_fragment"
+        android:layout_weight="1"
+        android:name="com.news.app.news.LocationFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true" />
 
-
-</RelativeLayout>
+</LinearLayout>
