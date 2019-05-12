@@ -1,60 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
-    android:background="@android:color/holo_blue_dark"
     android:gravity="center"
-    android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_weight="1">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:textColor="@android:color/white"
-            android:text="Weather:"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/weather"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:text="Result"
-            android:textSize="15sp" />
-
-    </LinearLayout>
+    android:background=""
+    android:layout_margin="10dp">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="horizontal">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Weather:"
+        android:textSize="20sp"
+        android:layout_marginEnd="10dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:textColor="@android:color/white"
-            android:text="Location:"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/coordinate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0,0"
-            android:textColor="@android:color/white"
-            android:textSize="15sp" />
-    </LinearLayout>
-
+    <TextView
+        android:id="@+id/weather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="weather_input"
+        android:textSize="20sp"/>
 </LinearLayout>
