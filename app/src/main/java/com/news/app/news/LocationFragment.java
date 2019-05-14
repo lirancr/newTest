@@ -36,7 +36,7 @@ import org.json.JSONObject;
 
 public class LocationFragment extends Fragment {
     final String TAG = "LocationFrag";
-    TextView weatherTv, coordinateTv;
+    TextView resultTv, coordinateTv;
     final int LOCATION_PERMISSION_REQUEST = 1;
     FusedLocationProviderClient client;
     double latitude, longitude;
@@ -56,26 +56,31 @@ public class LocationFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.location_frag, container, false);
-        weatherTv = rootView.findViewById(R.id.weather);
-        weatherTv.setText("");
-        if (Build.VERSION.SDK_INT >= 23) {
-            int hasLocationPermission = getContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-            if (hasLocationPermission != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST);
-            } else getLocation();
-        } else getLocation();
+        resultTv = rootView.findViewById(R.id.result_tv);
+        coordinateTv = rootView.findViewById(R.id.coordinate_tv);
         return rootView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        if (Build.VERSION.SDK_INT >= 23) {
+            int hasLocationPermission = getContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+            if (hasLocationPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST);
+            } else getLocation();
+        } else getLocation();
     }
 
     @Override
     public void onResume() {
-        getLocation();
         super.onResume();
+        if (Build.VERSION.SDK_INT >= 23) {
+            int hasLocationPermission = getContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+            if (hasLocationPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST);
+            } else getLocation();
+        } else getLocation();
     }
 
     @Override
@@ -124,7 +129,7 @@ public class LocationFragment extends Fragment {
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
                 Location location = locationResult.getLastLocation();
-                coordinateTv.setText(location.getLatitude() + "," + location.getLongitude());
+                coordinateTv.setText(location.getLatitude() + " , " + location.getLongitude());
 
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
@@ -140,13 +145,12 @@ public class LocationFragment extends Fragment {
                                 JSONObject bestResult = weatherArr.getJSONObject(0);
                                 String mainWeather = bestResult.getString("description");
                                 sb.append(mainWeather+"\n");
-
                             }
                             JSONObject mainObject = rootObject.getJSONObject("main");
-                            sb.append("Current temp:" + mainObject.getString( "temp"));
+                            sb.append("Current temp:" + mainObject.getDouble( "temp") + ", Max temp: "+ mainObject.getInt("temp_max") + ", Min temp: " + mainObject.getInt("temp_min") + "\n");
                             sb.append(rootObject.getString("name"));
 
-                            weatherTv.setText(sb.toString());
+                            resultTv.setText(sb.toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -162,8 +166,8 @@ public class LocationFragment extends Fragment {
             }
         };
 
-
-
+        if(Build.VERSION.SDK_INT >= 23 && getContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)==PackageManager.PERMISSION_GRANTED);
+            client.requestLocationUpdates(request,callback,null);
     }
 }
 
