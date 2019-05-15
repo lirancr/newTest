@@ -14,10 +14,16 @@ import com.squareup.picasso.Picasso;
 
 public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapter.VH> {
 
-    Article[] articles;
+    interface OnItemClickListener {
+        void onItemClick(Article item);
+    }
 
-    public NewsRecyclerAdapter(Article[] articles) {
+    Article[] articles;
+    OnItemClickListener onItemClickListener;
+
+    public NewsRecyclerAdapter(Article[] articles, OnItemClickListener onItemClickListener) {
         this.articles = articles;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -28,7 +34,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
 
     @Override
     public void onBindViewHolder(@NonNull VH vh, int i) {
-        vh.bindData(articles[i]);
+        vh.bindData(articles[i], this.onItemClickListener);
     }
 
     @Override
@@ -49,7 +55,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
             description = itemView.findViewById(R.id.description);
         }
 
-        public void bindData(Article article) {
+        public void bindData(final Article article, final OnItemClickListener clickListener) {
             title.setText(article.title);
             author.setText(article.author);
             description.setText(article.description);
@@ -60,6 +66,13 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
                 Picasso.get().load(article.urlToImage).into(imageView);
                 imageView.setVisibility(View.VISIBLE);
             }
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickListener.onItemClick(article);
+                }
+            });
         }
     }
 

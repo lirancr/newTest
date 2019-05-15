@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
-public class MainActivity extends AppCompatActivity {
+import com.news.app.news.entities.Article;
+
+public class MainActivity extends AppCompatActivity implements NewsRecyclerAdapter.OnItemClickListener {
 
     final String LIST_FRAG_TAG = "list_frag";
     final String LOCATION_FRAG_TAG = "location_frag";
@@ -17,5 +19,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.top_frag, new NewsFragment())
+                .commit();
+    }
+
+    @Override
+    public void onItemClick(Article item) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.top_frag, NewsItemFragment.newInstance(item))
+                .addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(getSupportFragmentManager().getBackStackEntryCount() > 0){
+            getSupportFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

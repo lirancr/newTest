@@ -10,13 +10,13 @@
     android:background="@color/cardview_shadow_end_color"
     tools:context=".MainActivity">
 
-    <fragment
-        android:id="@+id/news_fragment"
-        android:layout_weight="7"
-        android:name="com.news.app.news.NewsFragment"
+    <FrameLayout
+        android:id="@+id/top_frag"
         android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
         android:layout_margin="3dp"
-        android:layout_height="0dp"/>
+        />
 
     <fragment
         android:id="@+id/location_fragment"

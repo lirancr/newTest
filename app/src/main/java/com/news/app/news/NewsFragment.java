@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.news.app.news.entities.Article;
 import com.news.app.news.entities.GetNewsResponse;
 
 public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Response.Listener<GetNewsResponse>, Response.ErrorListener {
@@ -48,7 +49,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onResponse(GetNewsResponse response) {
         this.pullToRefresh.setRefreshing(false);
-        this.recyclerView.setAdapter(new NewsRecyclerAdapter(response.articles));
+        this.recyclerView.setAdapter(new NewsRecyclerAdapter(response.articles, (NewsRecyclerAdapter.OnItemClickListener) getActivity()));
     }
 
     @Override
