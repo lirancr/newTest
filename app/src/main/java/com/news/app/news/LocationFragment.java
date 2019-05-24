@@ -54,6 +54,7 @@ public class LocationFragment extends Fragment {
     final int REQUEST_CHECK_SETTINGS = 2;
     FusedLocationProviderClient client;
     double latitude, longitude;
+    LocationCallback callback;
     final String WEATHER_SERVICE_LINK = "http://api.openweathermap.org/data/2.5/weather?id=2172797&APPID=5bda833ea98063658162aac5ac577075&units=metric&";//lat=32.08337216&lon=34.77137702";
 
     @Override
@@ -76,7 +77,6 @@ public class LocationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.location_frag, container, false);
         resultTv = rootView.findViewById(R.id.result_tv);
-        coordinateTv = rootView.findViewById(R.id.coordinate_tv);
         return rootView;
     }
 
@@ -102,13 +102,21 @@ public class LocationFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if(hasLocationPermission()) {
+            client.removeLocationUpdates(callback);
+        }
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_REQUEST) {
             for(int permissionResult : grantResults) {
                 if(permissionResult != PackageManager.PERMISSION_GRANTED) return;
             }
-            getLocation();;
+            getLocation();
         }
     }
 
@@ -186,12 +194,12 @@ public class LocationFragment extends Fragment {
 
         checkSettings(request);
 
-        LocationCallback callback = new LocationCallback() {
+        callback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
                 Location location = locationResult.getLastLocation();
-                coordinateTv.setText(location.getLatitude() + " , " + location.getLongitude());
+
 
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
@@ -206,11 +214,13 @@ public class LocationFragment extends Fragment {
                             if(weatherArr.length()>0){
                                 JSONObject bestResult = weatherArr.getJSONObject(0);
                                 String mainWeather = bestResult.getString("description");
-                                sb.append(mainWeather+"\n");
+                                sb.append("Location: " + rootObject.getString("name")+"\n");
+                                sb.append("Weather: " + mainWeather+"\n");
+
                             }
                             JSONObject mainObject = rootObject.getJSONObject("main");
-                            sb.append("Current temp:" + mainObject.getDouble( "temp") + ", Max temp: "+ mainObject.getInt("temp_max") + ", Min temp: " + mainObject.getInt("temp_min") + "\n");
-                            sb.append(rootObject.getString("name"));
+                            sb.append("Current temp: " + mainObject.getDouble( "temp") + ", between: "+ mainObject.getInt("temp_max") + " - " + mainObject.getInt("temp_min") +" Celsius" +"\n");
+
 
                             resultTv.setText(sb.toString());
                         } catch (JSONException e) {

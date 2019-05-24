@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/one_min"
+        android:title="1 Minute interval"
+        app:showAsAction="never"
+        android:orderInCategory="1"></item>
+
+    <item android:id="@+id/five_min"
+        android:title="5 Minutes interval"
+        app:showAsAction="never"
+        android:orderInCategory="2"></item>
+
+    <item android:id="@+id/ten_min"
+        android:title="10 Minutes interval"
+        app:showAsAction="never"
+        android:orderInCategory="3"></item>
+</menu>

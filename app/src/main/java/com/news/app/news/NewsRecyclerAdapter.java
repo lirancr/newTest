@@ -52,13 +52,13 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
             title = itemView.findViewById(R.id.title);
             imageView = itemView.findViewById(R.id.image);
             author = itemView.findViewById(R.id.author);
-            description = itemView.findViewById(R.id.description);
+
         }
 
         public void bindData(final Article article, final OnItemClickListener clickListener) {
             title.setText(article.title);
             author.setText(article.author);
-            description.setText(article.description);
+
 
             if(TextUtils.isEmpty(article.urlToImage)){
                 imageView.setVisibility(View.INVISIBLE);
@@ -75,5 +75,6 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
             });
         }
     }
+
 
 }

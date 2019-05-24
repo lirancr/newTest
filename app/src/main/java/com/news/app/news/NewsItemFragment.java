@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso;
 
 public class NewsItemFragment extends Fragment {
 
-    TextView title, author, description;
+    TextView title, author, description, content;
     ImageView imageView;
 
     public static NewsItemFragment newInstance(Article article) {
@@ -43,11 +43,12 @@ public class NewsItemFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.rv_item, container, false);
+        View rootView = inflater.inflate(R.layout.news_item_frag, container, false);
         title = rootView.findViewById(R.id.title);
         imageView = rootView.findViewById(R.id.image);
         author = rootView.findViewById(R.id.author);
         description = rootView.findViewById(R.id.description);
+        content = rootView.findViewById(R.id.content);
 
         Article article = getArguments().getParcelable("article");
         if(article != null) {
@@ -77,6 +78,7 @@ public class NewsItemFragment extends Fragment {
         title.setText(article.title);
         author.setText(article.author);
         description.setText(article.description);
+        content.setText(article.content);
 
         if(TextUtils.isEmpty(article.urlToImage)){
             imageView.setVisibility(View.INVISIBLE);

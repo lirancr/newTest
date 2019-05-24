@@ -1,11 +1,12 @@
 package com.news.app.news;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.news.app.news.entities.Article;
 
@@ -21,6 +22,10 @@ public class MainActivity extends AppCompatActivity implements NewsRecyclerAdapt
 
         getSupportFragmentManager().beginTransaction().replace(R.id.top_frag, new NewsFragment())
                 .commit();
+
+        if(getIntent().getParcelableExtra("article") != null) {
+            onItemClick((Article) getIntent().getParcelableExtra("article"));
+        }
     }
 
     @Override
@@ -37,4 +42,33 @@ public class MainActivity extends AppCompatActivity implements NewsRecyclerAdapt
             super.onBackPressed();
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.action_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.one_min) {
+            startAlarm(1);
+        } else if (item.getItemId() == R.id.five_min) {
+            startAlarm(5);
+        } else if (item.getItemId() == R.id.ten_min) {
+            startAlarm(10);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void startAlarm(int minutes) {
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
+        long when = System.currentTimeMillis() + minutes * 60000;         // notification time
+        Intent intent = new Intent(this, ReminderService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
+        alarmManager.setRepeating(AlarmManager.RTC, when, minutes * 60000, pendingIntent);
+    }
+
+
 }
+

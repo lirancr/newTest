@@ -1,5 +1,12 @@
 package com.news.app.news;
 
+import android.app.AlarmManager;
+import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +21,6 @@ import android.view.ViewGroup;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.news.app.news.entities.Article;
 import com.news.app.news.entities.GetNewsResponse;
 
 public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Response.Listener<GetNewsResponse>, Response.ErrorListener {
@@ -57,4 +63,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         this.pullToRefresh.setRefreshing(false);
         Log.e("News", error.networkResponse.toString());
     }
+
+
 }
